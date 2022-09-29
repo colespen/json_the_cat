@@ -18,7 +18,7 @@ const fetchBreedDescription = (breedName, callbackFn) => {
     if (!breed) {
       callbackFn("Breed not found.", null);
       return; //exit, error
-    } 
+    }
       
     callbackFn(null, breed.description);
     
