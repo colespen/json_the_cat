@@ -1,32 +1,28 @@
 const request = require('request');
-const argv = process.argv.slice(2);
 
-let URL = 'https://api.thecsdsdsatapi.com/v1/breeds/search?q=';
-
+let URL = 'https://api.thecatapi.com/v1/breeds/search?q=';
 
 
+const fetchBreedDescription = (breedName, callbackFn) => {
 
+  request((URL + breedName), (err, response, body) => {
 
-const getAndPrintBreed = (URL) => {
-  
-  
-  
-  request(URL)
-}
+    if (err) { // err parameter is used
+      callbackFn(err, null);
+      return; //exit, error
+    }
+    
+    const data = JSON.parse(body);
+    const breed = data[0];
 
+    if (!breed) {
+      callbackFn("Breed not found.", null);
+      return; //exit, error
+    } 
+      
+    callbackFn(null, breed.description);
+    
+  });
+};
 
-request(URL + argv[0], (err, response, body) => {
-
-  if (err) {
-    console.log(err);
-    return;
-  }
-  const data = JSON.parse(body);
-  const breed = data[0];
-
-  if (breed) {
-    console.log(breed.description);
-  } else {
-    console.log("Breed not found.");
-  }
-});
+module.exports = fetchBreedDescription;
